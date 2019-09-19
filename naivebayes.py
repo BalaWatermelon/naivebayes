@@ -13,24 +13,30 @@ def readData(filename):
     return dataset
 
 
-def buildTrainData(dataset, label):
-    # dataset = [['1','2'],['1','2']]
-    # label = [['1','0'],['CLASS','ROWID']]
-    """
-    >>> buildTrainData([[1,2],[3,4]],[[1,0],[1,0]]) == {1:[[1,2],[3,4]]}
-    True
+def readLabel(filename):
+    labelSet = {}
+    with open(filename) as file:
+        for line in file.readlines():
+            klass, rowId = line.strip().split()
+            klass = int(klass)
+            rowId = int(rowId)
+            labelSet[rowId] = klass
+    return labelSet
 
-    >>> buildTrainData([[1,2],[3,4],[1,2]],[[1,0],[0,1],[3,2]]) == {1:[[1,2]],0:[[3,4]],3:[[1,2]]}
-    True
 
-    """
+def buildTrainData(dataset, labelSet):
     trainData = {}
-    for data, label in zip(dataset, label):
-        if label[CLASS] in trainData:
-            trainData[label[CLASS]].append(data)
+    predictData = {}
+    for rowId in range(len(dataset)):
+        if rowId in labelSet:
+            if labelSet[rowId] not in trainData:
+                trainData[labelSet[rowId]] = []
+            else:
+                trainData[labelSet[rowId]].append(dataset[rowId])
         else:
-            trainData[label[CLASS]] = [data]
-    return trainData
+            # This is a predict row, record rowId and value
+            predictData[rowId] = dataset[rowId]
+    return trainData, predictData
 
 
 def mean(array):
@@ -80,18 +86,13 @@ def predict(row, weightData):
 
 
 def main():
-    dataSet = readData('testBayes.data')
-    label = readData('testBayes.trainlabels.0')
-    trainData = buildTrainData(dataSet, label)
-    trainData = {'0': [[0, 2], [0, 1], [1, 2]],
-                 '1': [[44, 50], [45, 50], [44, 51]]}
+    dataSet = readData('data/testBayes.data')
+    labelSet = readLabel('data/testBayes.trainlabels.0')
+    trainData, predictData = buildTrainData(dataSet, labelSet)
     weightData = classWeights(trainData)
-    testSet = readData('test.data')
-    rowId = 0
-    for row in testSet:
-        result = predict(row, weightData)
-        print(row, result, rowId)
-        rowId += 1
+    for key in predictData:
+        result = predict(predictData[key], weightData)
+        print(predictData[key], result, key)
 
 
 if __name__ == "__main__":
