@@ -1,5 +1,3 @@
-# TODO: Create unit test
-# Reduce magic numbers
 MEAN = 0
 STD = 1
 CLASS = 0
@@ -30,7 +28,7 @@ def buildTrainData(dataset, labelSet):
     for rowId in range(len(dataset)):
         if rowId in labelSet:
             if labelSet[rowId] not in trainData:
-                trainData[labelSet[rowId]] = []
+                trainData[labelSet[rowId]] = [dataset[rowId]]
             else:
                 trainData[labelSet[rowId]].append(dataset[rowId])
         else:
@@ -55,8 +53,7 @@ def mean(array):
 def standardD(array):
     m = mean(array)
     distances = [(n-m)**2 for n in array]
-    # TODO: Sample or normal variance?
-    variance = sum(distances)/(len(distances)-1)
+    variance = sum(distances)/len(distances)
     return variance**0.5
 
 
@@ -92,7 +89,7 @@ def main():
     weightData = classWeights(trainData)
     for key in predictData:
         result = predict(predictData[key], weightData)
-        print(predictData[key], result, key)
+        print(result, key)
 
 
 if __name__ == "__main__":
