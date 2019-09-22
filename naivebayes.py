@@ -47,7 +47,7 @@ def mean(array):
     mean = 0
     for num in array:
         mean += num
-    return round(mean/len(array), 7)
+    return round(mean/float(len(array)), 7)
 
 
 def standardD(array):
