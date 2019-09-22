@@ -53,7 +53,7 @@ def mean(array):
 def standardD(array):
     m = mean(array)
     distances = [(n-m)**2 for n in array]
-    variance = sum(distances)/len(distances)
+    variance = sum(distances)/float(len(distances))
     return variance**0.5
 
 
