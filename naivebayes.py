@@ -27,6 +27,7 @@ def buildTrainData(dataset, labelSet):
     predictData = {}
     for rowId in range(len(dataset)):
         if rowId in labelSet:
+            # This is a row with label
             if labelSet[rowId] not in trainData:
                 trainData[labelSet[rowId]] = [dataset[rowId]]
             else:
