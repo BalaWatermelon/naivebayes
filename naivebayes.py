@@ -82,6 +82,7 @@ def predict(row, weightData):
     return resultClass
 
 
+
 def main():
     import sys
     if len(sys.argv) != 3:
@@ -95,7 +96,7 @@ def main():
     weightData = classWeights(trainData)
     for key in predictData:
         result = predict(predictData[key], weightData)
-        print(result, key)
+        print(f'{result} {key}')
 
 
 if __name__ == "__main__":
