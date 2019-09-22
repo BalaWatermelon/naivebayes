@@ -83,8 +83,14 @@ def predict(row, weightData):
 
 
 def main():
-    dataSet = readData('data/testBayes.data')
-    labelSet = readLabel('data/testBayes.trainlabels.0')
+    import sys
+    if len(sys.argv) != 3:
+        print('Wrong number of arguments, exiting...')
+        sys.exit(1)
+    dataFile = sys.argv[1]
+    labelFile = sys.argv[2]
+    dataSet = readData(dataFile)
+    labelSet = readLabel(labelFile)
     trainData, predictData = buildTrainData(dataSet, labelSet)
     weightData = classWeights(trainData)
     for key in predictData:
