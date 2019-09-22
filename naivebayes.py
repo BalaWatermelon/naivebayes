@@ -54,6 +54,10 @@ def standardD(array):
     m = mean(array)
     distances = [(n-m)**2 for n in array]
     variance = sum(distances)/float(len(distances))
+    if variance == 0:
+        array = list(array)
+        array.append(m-0.1)
+        return standardD(array)
     return variance**0.5
 
 
