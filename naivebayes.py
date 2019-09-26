@@ -1,3 +1,6 @@
+# Small mean margin
+MARGIN = 0.01
+# Reduce magic numbers
 MEAN = 0
 STD = 1
 CLASS = 0
@@ -7,7 +10,7 @@ def readData(filename):
     dataset = []
     with open(filename) as file:
         for line in file.readlines():
-            dataset.append([int(x) for x in line.strip().split(' ')])
+            dataset.append([float(x) for x in line.strip().split(' ')])
     return dataset
 
 
@@ -39,13 +42,7 @@ def buildTrainData(dataset, labelSet):
 
 
 def mean(array):
-    """
-    >>> mean([1,2,3])
-    2.0
-    >>> mean([3,3,4,4,5,6])
-    4.1666667
-    """
-    mean = 0
+    mean = MARGIN
     for num in array:
         mean += num
     return round(mean/float(len(array)), 7)
@@ -85,7 +82,6 @@ def predict(row, weightData):
             minDistance = classDistance
             resultClass = classLabel
     return resultClass
-
 
 
 def main():
